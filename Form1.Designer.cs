@@ -45,7 +45,7 @@ namespace BooksReader
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.changeThemeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.searchBtn = new System.Windows.Forms.Button();
             this.defaultThemeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -67,7 +67,7 @@ namespace BooksReader
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.button1);
+            this.groupBox2.Controls.Add(this.searchBtn);
             this.groupBox2.Controls.Add(this.textBox1);
             this.groupBox2.Controls.Add(this.addBookBtn);
             this.groupBox2.Controls.Add(this.closeBookBtn);
@@ -199,15 +199,17 @@ namespace BooksReader
             this.textBox1.Size = new System.Drawing.Size(239, 22);
             this.textBox1.TabIndex = 2;
             // 
-            // button1
+            // searchBtn
             // 
-            this.button1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button1.BackgroundImage")));
-            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.button1.Location = new System.Drawing.Point(958, 36);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(64, 49);
-            this.button1.TabIndex = 3;
-            this.button1.UseVisualStyleBackColor = true;
+            this.searchBtn.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("searchBtn.BackgroundImage")));
+            this.searchBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.searchBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.searchBtn.Location = new System.Drawing.Point(958, 36);
+            this.searchBtn.Name = "searchBtn";
+            this.searchBtn.Size = new System.Drawing.Size(64, 49);
+            this.searchBtn.TabIndex = 3;
+            this.searchBtn.UseVisualStyleBackColor = true;
+            this.searchBtn.Click += new System.EventHandler(this.searchBtn_Click);
             // 
             // defaultThemeToolStripMenuItem
             // 
@@ -260,7 +262,7 @@ namespace BooksReader
         private System.Windows.Forms.Button closeBookBtn;
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.ToolStripMenuItem changeThemeToolStripMenuItem;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button searchBtn;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.ToolStripMenuItem defaultThemeToolStripMenuItem;
     }

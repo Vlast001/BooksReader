@@ -23,12 +23,20 @@ namespace BooksReader
 
             addBookBtn.Enabled = false;
             closeBookBtn.Enabled = false;
+
+
+            System.Drawing.Drawing2D.GraphicsPath myPath = new System.Drawing.Drawing2D.GraphicsPath();
+            
+            myPath.AddEllipse(1, 1, searchBtn.Width, searchBtn.Height);
+            // создаем с помощью элипса ту область формы, которую мы хотим видеть
+            Region myRegion = new Region(myPath);
+            // устанавливаем видимую область
+            searchBtn.Region = myRegion;
         }
 
         private void openFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Parallel.Invoke(ReadFile);
-
         }
 
         private void ReadFile()
@@ -256,6 +264,23 @@ namespace BooksReader
             groupBox1.ForeColor = SystemColors.ControlText;
             groupBox2.ForeColor = SystemColors.ControlText;
             listBox1.ForeColor = SystemColors.WindowText;
+        }
+
+        private void searchBtn_Click(object sender, EventArgs e)
+        {
+            int start = 0;
+            int end = richTextBox1.Text.LastIndexOf(textBox1.Text);
+
+            richTextBox1.SelectAll();
+            richTextBox1.SelectionBackColor = SystemColors.Control;
+
+            while (start < end)
+            {
+                richTextBox1.Find(textBox1.Text, start, richTextBox1.TextLength, RichTextBoxFinds.MatchCase);
+                richTextBox1.SelectionBackColor = Color.Chartreuse;
+
+                start = richTextBox1.Text.IndexOf(textBox1.Text, start) + 1;
+            }
         }
     }
 }
