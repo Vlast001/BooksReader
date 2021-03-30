@@ -227,5 +227,35 @@ namespace BooksReader
             var company = assembly.GetCustomAttributes<AssemblyCompanyAttribute>().FirstOrDefault();
             MessageBox.Show($"{company?.Company}");
         }
+
+        private void changeThemeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChangeThemeForm theme = new ChangeThemeForm();
+            if (theme.ShowDialog() == DialogResult.OK)
+            {
+                var themColors = theme.SetNewColors();
+                this.BackColor = themColors[0];
+                this.ForeColor = themColors[1];
+                groupBox1.BackColor = themColors[0];
+                groupBox2.BackColor = themColors[0];
+
+                groupBox1.ForeColor = themColors[1];
+                groupBox2.ForeColor = themColors[1];
+                listBox1.ForeColor = themColors[1];
+            }
+        }
+
+        private void defaultThemeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.BackColor = SystemColors.Control;
+            this.ForeColor = SystemColors.ControlText;
+
+            groupBox1.BackColor = SystemColors.Control;
+            groupBox2.BackColor = SystemColors.Control;
+
+            groupBox1.ForeColor = SystemColors.ControlText;
+            groupBox2.ForeColor = SystemColors.ControlText;
+            listBox1.ForeColor = SystemColors.WindowText;
+        }
     }
 }

@@ -29,6 +29,7 @@ namespace BooksReader
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.addBookBtn = new System.Windows.Forms.Button();
@@ -43,6 +44,9 @@ namespace BooksReader
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.changeThemeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.defaultThemeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -63,6 +67,8 @@ namespace BooksReader
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.button1);
+            this.groupBox2.Controls.Add(this.textBox1);
             this.groupBox2.Controls.Add(this.addBookBtn);
             this.groupBox2.Controls.Add(this.closeBookBtn);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
@@ -121,14 +127,15 @@ namespace BooksReader
             // openFileToolStripMenuItem
             // 
             this.openFileToolStripMenuItem.Name = "openFileToolStripMenuItem";
-            this.openFileToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.openFileToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.openFileToolStripMenuItem.Text = "&Open file";
             this.openFileToolStripMenuItem.Click += new System.EventHandler(this.openFileToolStripMenuItem_Click);
             // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.changeThemeToolStripMenuItem});
+            this.changeThemeToolStripMenuItem,
+            this.defaultThemeToolStripMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.settingsToolStripMenuItem.Text = "&Settings";
@@ -183,6 +190,31 @@ namespace BooksReader
             this.changeThemeToolStripMenuItem.Name = "changeThemeToolStripMenuItem";
             this.changeThemeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.changeThemeToolStripMenuItem.Text = "&Change theme";
+            this.changeThemeToolStripMenuItem.Click += new System.EventHandler(this.changeThemeToolStripMenuItem_Click);
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(713, 49);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(239, 22);
+            this.textBox1.TabIndex = 2;
+            // 
+            // button1
+            // 
+            this.button1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button1.BackgroundImage")));
+            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.button1.Location = new System.Drawing.Point(958, 36);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(64, 49);
+            this.button1.TabIndex = 3;
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // defaultThemeToolStripMenuItem
+            // 
+            this.defaultThemeToolStripMenuItem.Name = "defaultThemeToolStripMenuItem";
+            this.defaultThemeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.defaultThemeToolStripMenuItem.Text = "&Default theme";
+            this.defaultThemeToolStripMenuItem.Click += new System.EventHandler(this.defaultThemeToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -194,6 +226,8 @@ namespace BooksReader
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.menuStrip1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
@@ -202,6 +236,7 @@ namespace BooksReader
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -225,6 +260,9 @@ namespace BooksReader
         private System.Windows.Forms.Button closeBookBtn;
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.ToolStripMenuItem changeThemeToolStripMenuItem;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.ToolStripMenuItem defaultThemeToolStripMenuItem;
     }
 }
 
