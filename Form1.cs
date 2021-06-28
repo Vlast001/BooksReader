@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using eBdb.EpubReader;
 
 namespace BooksReader
 {
@@ -24,14 +26,18 @@ namespace BooksReader
             addBookBtn.Enabled = false;
             closeBookBtn.Enabled = false;
 
+            #region Нарисовать кнопку поиска круглой
 
-            System.Drawing.Drawing2D.GraphicsPath myPath = new System.Drawing.Drawing2D.GraphicsPath();
+            //System.Drawing.Drawing2D.GraphicsPath myPath = new System.Drawing.Drawing2D.GraphicsPath();
+
+            //myPath.AddEllipse(1, 1, searchBtn.Width, searchBtn.Height);
+            //// создаем с помощью элипса ту область формы, которую мы хотим видеть
+            //Region myRegion = new Region(myPath);
+            //// устанавливаем видимую область
+            //searchBtn.Region = myRegion;
             
-            myPath.AddEllipse(1, 1, searchBtn.Width, searchBtn.Height);
-            // создаем с помощью элипса ту область формы, которую мы хотим видеть
-            Region myRegion = new Region(myPath);
-            // устанавливаем видимую область
-            searchBtn.Region = myRegion;
+
+            #endregion
         }
 
         private void openFileToolStripMenuItem_Click(object sender, EventArgs e)
@@ -41,8 +47,9 @@ namespace BooksReader
 
         private void ReadFile()
         {
+            richTextBox1.ReadOnly = false;
             string txt = "";
-            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            using (OpenFileDialog openFileDialog = new OpenFileDialog(){Filter = "txt files (*.txt)|*.txt|rtf books|*.rtf|ePub books|*.epub|All files (*.*)|*.*", Multiselect = false})
             {
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
@@ -51,6 +58,11 @@ namespace BooksReader
                         filePath = openFileDialog.FileName;
                         txt = File.ReadAllText(filePath);
                         richTextBox1.Text = txt;
+                    }
+                    else if(openFileDialog.FileName.EndsWith(".rtf"))
+                    {
+                        filePath = openFileDialog.FileName;
+                        richTextBox1.LoadFile(filePath);
                     }
                     else if (openFileDialog.FileName.EndsWith(".docx") || openFileDialog.FileName.EndsWith(".doc"))
                     {
@@ -75,17 +87,26 @@ namespace BooksReader
                         richTextBox1.Rtf = data.GetData(DataFormats.Rtf).ToString();
                         oWord.Quit(ref missing, ref missing, ref missing);
                     }
+                    else if (openFileDialog.FileName.EndsWith(".epub"))
+                    {
+                        filePath = openFileDialog.FileName;
+                        Epub epub = new Epub(filePath);
+
+                        richTextBox1.Text = epub.GetContentAsPlainText();
+                    }
                     else
                     {
                         MessageBox.Show("Need open another format");
                     }
 
+                    richTextBox1.ReadOnly = true;
                 }
             }
         }
 
         private void ReadFileFromData(string filePath)
         {
+            richTextBox1.ReadOnly = false;
             string txt = "";
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
@@ -94,6 +115,10 @@ namespace BooksReader
                 {
                     txt = File.ReadAllText(filePath);
                     richTextBox1.Text = txt;
+                }
+                else if (openFileDialog.FileName.EndsWith(".rtf"))
+                {
+                    richTextBox1.LoadFile(filePath);
                 }
                 else if (openFileDialog.FileName.EndsWith(".docx") || openFileDialog.FileName.EndsWith(".doc"))
                 {
@@ -118,10 +143,17 @@ namespace BooksReader
                     richTextBox1.Rtf = data.GetData(DataFormats.Rtf).ToString();
                     oWord.Quit(ref missing, ref missing, ref missing);
                 }
+                else if (openFileDialog.FileName.EndsWith(".epub"))
+                {
+                    Epub epub = new Epub(filePath);
+
+                    richTextBox1.Text = epub.GetContentAsPlainText();
+                }
                 else
                 {
                     MessageBox.Show("Need open another format");
                 }
+                richTextBox1.ReadOnly = true;
 
             }
         }
@@ -148,7 +180,13 @@ namespace BooksReader
             }
         }
 
-        private async void Form1_Load(object sender, EventArgs e)
+        private void Form1_Load(object sender, EventArgs e)
+        {
+           
+           LoadLocalLibrary();
+        }
+
+        private async void LoadLocalLibrary()
         {
             string path = @"..\..\Data\log.txt";
             try
@@ -167,7 +205,6 @@ namespace BooksReader
             {
                 MessageBox.Show(exception.Message);
             }
-           
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -223,10 +260,10 @@ namespace BooksReader
             var titleAttribute = assembly.GetCustomAttributes<AssemblyTitleAttribute>().FirstOrDefault();
             var descriptionAttribute = assembly.GetCustomAttributes<AssemblyDescriptionAttribute>().FirstOrDefault();
 
-            MessageBox.Show($"This assembly title is {titleAttribute?.Title}" +
-                            $"\n{descriptionAttribute?.Description}" +
-                            $"\n{assembly.CodeBase}" +
-                            $"\n{assembly.FullName}");
+            MessageBox.Show($"This assembly title is {titleAttribute?.Title}\n" +
+                            $"\nDescription: {descriptionAttribute?.Description}" +
+                            $"\n\n{assembly.CodeBase}" +
+                            $"\n\n{assembly.FullName}");
         }
 
         private void authorToolStripMenuItem_Click(object sender, EventArgs e)
@@ -281,6 +318,38 @@ namespace BooksReader
 
                 start = richTextBox1.Text.IndexOf(textBox1.Text, start) + 1;
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            richTextBox1.ZoomFactor += 0.5f;
+        }
+
+        private void zoomMinusBtn_Click(object sender, EventArgs e)
+        {
+            richTextBox1.ZoomFactor -= 0.5f;
+        }
+
+        private void changeLocalLibraryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChangeLogFile();
+        }
+
+        private void ChangeLogFile()
+        {
+            string localLibraryPath = @"..\..\Data\log.txt";
+            MessageBox.Show("После внесения изменений в файл локальной библиотеки перезапустите приложение");
+            process1 = Process.Start(localLibraryPath);
+        }
+
+        private void process1_Exited(object sender, EventArgs e)
+        {
+            if (process1.HasExited)
+            {
+                MessageBox.Show("True");
+            }
+            listBox1.Items.Clear();
+            LoadLocalLibrary();
         }
     }
 }

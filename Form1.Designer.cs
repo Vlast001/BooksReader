@@ -31,22 +31,26 @@ namespace BooksReader
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.listBox1 = new System.Windows.Forms.ListBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.zoomMinusBtn = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.searchBtn = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.addBookBtn = new System.Windows.Forms.Button();
             this.closeBookBtn = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.changeThemeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.defaultThemeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.infoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.authorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.listBox1 = new System.Windows.Forms.ListBox();
-            this.changeThemeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.searchBtn = new System.Windows.Forms.Button();
-            this.defaultThemeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.changeLocalLibraryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.process1 = new System.Diagnostics.Process();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -65,8 +69,20 @@ namespace BooksReader
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Books";
             // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.ItemHeight = 16;
+            this.listBox1.Location = new System.Drawing.Point(7, 22);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(253, 292);
+            this.listBox1.TabIndex = 1;
+            this.listBox1.DoubleClick += new System.EventHandler(this.listBox1_DoubleClick);
+            // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.zoomMinusBtn);
+            this.groupBox2.Controls.Add(this.button1);
             this.groupBox2.Controls.Add(this.searchBtn);
             this.groupBox2.Controls.Add(this.textBox1);
             this.groupBox2.Controls.Add(this.addBookBtn);
@@ -80,6 +96,47 @@ namespace BooksReader
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Управление книгой";
+            // 
+            // zoomMinusBtn
+            // 
+            this.zoomMinusBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.zoomMinusBtn.Location = new System.Drawing.Point(587, 49);
+            this.zoomMinusBtn.Name = "zoomMinusBtn";
+            this.zoomMinusBtn.Size = new System.Drawing.Size(41, 36);
+            this.zoomMinusBtn.TabIndex = 5;
+            this.zoomMinusBtn.Text = "-";
+            this.zoomMinusBtn.UseVisualStyleBackColor = true;
+            this.zoomMinusBtn.Click += new System.EventHandler(this.zoomMinusBtn_Click);
+            // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button1.Location = new System.Drawing.Point(634, 50);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(41, 36);
+            this.button1.TabIndex = 4;
+            this.button1.Text = "+";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // searchBtn
+            // 
+            this.searchBtn.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("searchBtn.BackgroundImage")));
+            this.searchBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.searchBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.searchBtn.Location = new System.Drawing.Point(958, 36);
+            this.searchBtn.Name = "searchBtn";
+            this.searchBtn.Size = new System.Drawing.Size(64, 49);
+            this.searchBtn.TabIndex = 3;
+            this.searchBtn.UseVisualStyleBackColor = true;
+            this.searchBtn.Click += new System.EventHandler(this.searchBtn_Click);
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(713, 49);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(239, 22);
+            this.textBox1.TabIndex = 2;
             // 
             // addBookBtn
             // 
@@ -127,7 +184,7 @@ namespace BooksReader
             // openFileToolStripMenuItem
             // 
             this.openFileToolStripMenuItem.Name = "openFileToolStripMenuItem";
-            this.openFileToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openFileToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
             this.openFileToolStripMenuItem.Text = "&Open file";
             this.openFileToolStripMenuItem.Click += new System.EventHandler(this.openFileToolStripMenuItem_Click);
             // 
@@ -135,10 +192,25 @@ namespace BooksReader
             // 
             this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.changeThemeToolStripMenuItem,
-            this.defaultThemeToolStripMenuItem});
+            this.defaultThemeToolStripMenuItem,
+            this.changeLocalLibraryToolStripMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.settingsToolStripMenuItem.Text = "&Settings";
+            // 
+            // changeThemeToolStripMenuItem
+            // 
+            this.changeThemeToolStripMenuItem.Name = "changeThemeToolStripMenuItem";
+            this.changeThemeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.changeThemeToolStripMenuItem.Text = "&Change theme";
+            this.changeThemeToolStripMenuItem.Click += new System.EventHandler(this.changeThemeToolStripMenuItem_Click);
+            // 
+            // defaultThemeToolStripMenuItem
+            // 
+            this.defaultThemeToolStripMenuItem.Name = "defaultThemeToolStripMenuItem";
+            this.defaultThemeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.defaultThemeToolStripMenuItem.Text = "&Default theme";
+            this.defaultThemeToolStripMenuItem.Click += new System.EventHandler(this.defaultThemeToolStripMenuItem_Click);
             // 
             // infoToolStripMenuItem
             // 
@@ -152,14 +224,14 @@ namespace BooksReader
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
             this.aboutToolStripMenuItem.Text = "&About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // authorToolStripMenuItem
             // 
             this.authorToolStripMenuItem.Name = "authorToolStripMenuItem";
-            this.authorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.authorToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
             this.authorToolStripMenuItem.Text = "&Author";
             this.authorToolStripMenuItem.Click += new System.EventHandler(this.authorToolStripMenuItem_Click);
             // 
@@ -175,48 +247,23 @@ namespace BooksReader
             this.richTextBox1.Text = "";
             this.richTextBox1.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
             // 
-            // listBox1
+            // changeLocalLibraryToolStripMenuItem
             // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 16;
-            this.listBox1.Location = new System.Drawing.Point(7, 22);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(253, 292);
-            this.listBox1.TabIndex = 1;
-            this.listBox1.DoubleClick += new System.EventHandler(this.listBox1_DoubleClick);
+            this.changeLocalLibraryToolStripMenuItem.Name = "changeLocalLibraryToolStripMenuItem";
+            this.changeLocalLibraryToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.changeLocalLibraryToolStripMenuItem.Text = "&Change local library";
+            this.changeLocalLibraryToolStripMenuItem.Click += new System.EventHandler(this.changeLocalLibraryToolStripMenuItem_Click);
             // 
-            // changeThemeToolStripMenuItem
+            // process1
             // 
-            this.changeThemeToolStripMenuItem.Name = "changeThemeToolStripMenuItem";
-            this.changeThemeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.changeThemeToolStripMenuItem.Text = "&Change theme";
-            this.changeThemeToolStripMenuItem.Click += new System.EventHandler(this.changeThemeToolStripMenuItem_Click);
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(713, 49);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(239, 22);
-            this.textBox1.TabIndex = 2;
-            // 
-            // searchBtn
-            // 
-            this.searchBtn.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("searchBtn.BackgroundImage")));
-            this.searchBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.searchBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.searchBtn.Location = new System.Drawing.Point(958, 36);
-            this.searchBtn.Name = "searchBtn";
-            this.searchBtn.Size = new System.Drawing.Size(64, 49);
-            this.searchBtn.TabIndex = 3;
-            this.searchBtn.UseVisualStyleBackColor = true;
-            this.searchBtn.Click += new System.EventHandler(this.searchBtn_Click);
-            // 
-            // defaultThemeToolStripMenuItem
-            // 
-            this.defaultThemeToolStripMenuItem.Name = "defaultThemeToolStripMenuItem";
-            this.defaultThemeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.defaultThemeToolStripMenuItem.Text = "&Default theme";
-            this.defaultThemeToolStripMenuItem.Click += new System.EventHandler(this.defaultThemeToolStripMenuItem_Click);
+            this.process1.StartInfo.Domain = "";
+            this.process1.StartInfo.LoadUserProfile = false;
+            this.process1.StartInfo.Password = null;
+            this.process1.StartInfo.StandardErrorEncoding = null;
+            this.process1.StartInfo.StandardOutputEncoding = null;
+            this.process1.StartInfo.UserName = "";
+            this.process1.SynchronizingObject = this;
+            this.process1.Exited += new System.EventHandler(this.process1_Exited);
             // 
             // Form1
             // 
@@ -265,6 +312,10 @@ namespace BooksReader
         private System.Windows.Forms.Button searchBtn;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.ToolStripMenuItem defaultThemeToolStripMenuItem;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button zoomMinusBtn;
+        private System.Windows.Forms.ToolStripMenuItem changeLocalLibraryToolStripMenuItem;
+        private System.Diagnostics.Process process1;
     }
 }
 
